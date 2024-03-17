@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import "./globals.css";
 import Image from "next/image";
 
@@ -8,10 +9,14 @@ export const BodyWrapper = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const [pageWindow, setPageWindow] = useState<Window | null>(null);
+  useEffect(() => {
+    setPageWindow(window);
+  }, []);
   return (
     <main
       className="relative flex w-full justify-center items-center bg-primary overflow-hidden z-10"
-      style={{ height: window?.innerHeight }}
+      style={{ height: pageWindow?.innerHeight }}
     >
       <div
         className="absolute w-[135%] max-w-screen-xl max-h-full top-[50%] left-[50%] transform translate-x-[-50%] pointer-events-none -z-10"
