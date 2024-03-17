@@ -9,7 +9,7 @@ import Lottie, { LottieRef } from "lottie-react";
 import Balancer from "react-wrap-balancer";
 
 const { classic, pre, guys, gals, chaos } = packConfig;
-export const Packs = [classic, pre, guys, gals, chaos];
+const Packs = [classic, pre, guys, gals, chaos];
 
 const scaleAnimation = {
   scale: [0.92, 1.02, 0.92],
