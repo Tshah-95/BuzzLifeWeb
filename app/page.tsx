@@ -4,6 +4,7 @@ import Image from "next/image";
 import Lottie from "lottie-react";
 import smileyBubbles from "../public/smiley-bubbles.json";
 import { easeIn, easeInOut, motion } from "framer-motion";
+import Link from "next/link";
 
 const scaleAnimation = {
   scale: [1, 1.1, 1],
@@ -33,18 +34,21 @@ export default function Home() {
       </motion.div>
       <div className="flex flex-col relative bottom-[10%]">
         <div className="flex justify-center">
-          <div className="w-[80%] max-w-[450px] min-h-[200px]">
+          <div className="w-[90%] max-w-[450px] min-h-[200px]">
             <Lottie animationData={smileyBubbles} loop />
           </div>
         </div>
         <div className="flex justify-center items-center">
           <motion.div
-            className="bg-tertiary rounded-lg shadow-md"
+            className="bg-tertiary rounded-lg shadow-md flex active:opacity-80"
             animate={scaleAnimation}
           >
-            <button className="text-[white] font-bold text-4xl py-5 px-12">
+            <Link
+              className="text-[white] font-bold text-4xl py-5 px-12 select-none"
+              href="/pack-select"
+            >
               Play
-            </button>
+            </Link>
           </motion.div>
         </div>
       </div>
