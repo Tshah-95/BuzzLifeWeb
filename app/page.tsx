@@ -38,9 +38,9 @@ export default function Home() {
             <Lottie animationData={smileyBubbles} loop />
           </div>
         </div>
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center active:scale-95">
           <motion.div
-            className="bg-tertiary rounded-lg shadow-md flex active:opacity-80"
+            className="bg-tertiary rounded-lg shadow-md flex"
             animate={scaleAnimation}
           >
             <Link

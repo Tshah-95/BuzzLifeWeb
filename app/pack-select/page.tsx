@@ -2,8 +2,8 @@
 
 import { motion, useAnimate } from "framer-motion";
 import Link from "next/link";
-import { useContext, useEffect, useRef } from "react";
-import { AppContext } from "@/reducers/AppReducer";
+import { useContext, useEffect, useRef, useState } from "react";
+import { AppContext, useAppContext } from "@/reducers/AppReducer";
 import { packConfig } from "@/constants/variables";
 import Lottie, { LottieRef } from "lottie-react";
 import Balancer from "react-wrap-balancer";
@@ -20,13 +20,18 @@ const scaleAnimation = {
   },
 };
 
-export default function Home() {
+export default function PackSelect() {
   const {
     state: { selectedGames },
     dispatch,
-  } = useContext(AppContext);
+  } = useAppContext();
+
+  useEffect(() => {
+    dispatch({ type: "generateCards" });
+  }, [selectedGames]);
 
   const purchased = false;
+  const anySelected = selectedGames.length > 0;
 
   return (
     <div className="flex flex-col h-full w-full items-center justify-center max-w-screen-sm p-5">
@@ -56,17 +61,27 @@ export default function Home() {
             />
           ))}
         </div>
-        <motion.div
-          className="bg-tertiary rounded-lg shadow-md flex w-full active:opacity-80"
-          animate={scaleAnimation}
+        <div
+          className="w-full data-[disabled=false]:active:scale-95"
+          data-disabled={!anySelected}
         >
-          <Link
-            className="text-[white] w-[95%] text-center font-bold text-4xl py-5 px-12"
-            href="/pack-select"
+          <motion.div
+            className="bg-tertiary rounded-lg shadow-md flex w-full data-[disabled=true]:opacity-75"
+            animate={
+              anySelected
+                ? scaleAnimation
+                : { scale: 1, transition: { duration: 0.3 } }
+            }
+            data-disabled={!anySelected}
           >
-            Select
-          </Link>
-        </motion.div>
+            <Link
+              className="text-[white] w-[95%] text-center font-bold text-4xl py-5 px-12"
+              href={anySelected ? "/player-select" : "#"}
+            >
+              {!anySelected ? "No Selection" : "Select"}
+            </Link>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
@@ -95,12 +110,22 @@ const GameTile = ({
 }) => {
   const animRef = useRef<any>();
   const [scope, animate] = useAnimate();
+  const [showGoodLuck, setShowGoodLuck] = useState(false);
+  const goodLuckTimeout = useRef<any>(null);
 
   useEffect(() => {
     animRef.current?.setSpeed(imgSpeed);
   }, [animRef.current]);
 
   useEffect(() => {
+    if (id === "chaos") {
+      clearTimeout(goodLuckTimeout.current);
+
+      goodLuckTimeout.current = setTimeout(() => {
+        setShowGoodLuck(selected);
+      }, 300);
+    }
+
     if (selected)
       animate(
         scope.current,
@@ -123,7 +148,7 @@ const GameTile = ({
           </div>
         </div>
         <div className="flex relative flex-col justify-center items-center text-center grow-[3] rounded-lg gap-1 overflow-hidden">
-          {selected && id === "chaos" ? (
+          {showGoodLuck ? (
             <div className="flex justify-center items-center text-4xl font-bold text-[white]">
               Good Luck!
             </div>

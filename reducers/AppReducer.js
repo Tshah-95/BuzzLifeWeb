@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import { CARD_TYPES, packConfig } from "../constants/variables";
 import { getShuffledCards } from "../constants/utils";
 //import * as Haptics from "expo-haptics";
@@ -329,3 +329,12 @@ const replaceNames = (str, players) => {
 
 // set up a context for the RevenueCat reducer
 export const AppContext = createContext();
+
+// set up hook for context
+export const useAppContext = () => {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("useAppContext must be used within a AppContext.Provider");
+  }
+  return context;
+};

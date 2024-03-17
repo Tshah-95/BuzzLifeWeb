@@ -14,6 +14,14 @@ const config: Config = {
       lightBlue: "#33DDFF",
       lightBlack: "#121212",
     },
+    extend: {
+      flex: {
+        "2": "2 2 auto",
+        "3": "3 3 auto",
+        "4": "4 4 auto",
+        "5": "5 5 auto",
+      },
+    },
   },
   plugins: [],
 };
