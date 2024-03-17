@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useAnimate } from "framer-motion";
 import Link from "next/link";
 import { useContext, useEffect, useRef } from "react";
 import { AppContext } from "@/reducers/AppReducer";
@@ -94,10 +94,17 @@ const GameTile = ({
   selected: boolean;
 }) => {
   const animRef = useRef<any>();
+  const [scope, animate] = useAnimate();
 
   useEffect(() => {
     animRef.current?.setSpeed(imgSpeed);
   }, [animRef.current]);
+
+  useEffect(() => {
+    if (selected)
+      animate(scope.current, { x: 400 }, { ease: "easeInOut", duration: 0.7 });
+    else animate(scope.current, { x: 0 }, { ease: "easeInOut", duration: 0.7 });
+  }, [selected]);
 
   return (
     <button
@@ -119,12 +126,9 @@ const GameTile = ({
           <div
             className="absolute w-full h-full rounded-lg bg-lightBlack"
             style={{
-              opacity: selected
-                ? id === "classic" || id === "pre"
-                  ? 0.15
-                  : 0.25
-                : 0,
+              opacity: id === "classic" || id === "pre" ? 0.15 : 0.25,
             }}
+            ref={scope}
           />
         </div>
       </div>
