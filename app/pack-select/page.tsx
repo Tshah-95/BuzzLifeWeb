@@ -102,7 +102,11 @@ const GameTile = ({
 
   useEffect(() => {
     if (selected)
-      animate(scope.current, { x: 400 }, { ease: "easeInOut", duration: 0.7 });
+      animate(
+        scope.current,
+        { x: Math.min(window?.screen?.width * 0.7, 500) },
+        { ease: "easeInOut", duration: 0.7 }
+      );
     else animate(scope.current, { x: 0 }, { ease: "easeInOut", duration: 0.7 });
   }, [selected]);
 
@@ -119,10 +123,18 @@ const GameTile = ({
           </div>
         </div>
         <div className="flex relative flex-col justify-center items-center text-center grow-[3] rounded-lg gap-1 overflow-hidden">
-          <h1 className="text-lg text-[white] font-bold z-10">{title}</h1>
-          <Balancer className="text-sm text-[white] w-[13em] z-10">
-            {caption}
-          </Balancer>
+          {selected && id === "chaos" ? (
+            <div className="flex justify-center items-center text-4xl font-bold text-[white]">
+              Good Luck!
+            </div>
+          ) : (
+            <>
+              <h1 className="text-lg text-[white] font-bold z-10">{title}</h1>
+              <Balancer className="text-sm text-[white] w-[13em] z-10">
+                {caption}
+              </Balancer>
+            </>
+          )}
           <div
             className="absolute w-full h-full rounded-lg bg-lightBlack"
             style={{
