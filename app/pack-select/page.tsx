@@ -7,10 +7,7 @@ import { AppContext, useAppContext } from "@/reducers/AppReducer";
 import { packConfig } from "@/constants/variables";
 import Lottie, { LottieRef } from "lottie-react";
 import Balancer from "react-wrap-balancer";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import Back from "@/public/back.png";
-import Settings from "@/public/settings.png";
+import { Header } from "../Header";
 
 const { classic, pre, guys, gals, chaos } = packConfig;
 const Packs = [classic, pre, guys, gals, chaos];
@@ -30,8 +27,6 @@ export default function PackSelect() {
     dispatch,
   } = useAppContext();
 
-  const router = useRouter();
-
   useEffect(() => {
     dispatch({ type: "generateCards" });
   }, [selectedGames]);
@@ -42,28 +37,7 @@ export default function PackSelect() {
   return (
     <div className="flex flex-col h-full w-full items-center justify-center max-w-screen-sm p-5">
       <div className="flex flex-col justify-center items-center w-full h-full">
-        <div className="flex w-full justify-between items-center">
-          <div className="p-3 -m-3">
-            <Image
-              className="cursor-pointer"
-              width={25}
-              height={25}
-              src={Back}
-              alt="back button"
-              onClick={() => router.back()}
-            />
-          </div>
-          <div className="p-3 -m-3">
-            <Image
-              className="cursor-pointer"
-              width={25}
-              height={25}
-              src={Settings}
-              alt="settings button"
-              onClick={() => router.back()}
-            />
-          </div>
-        </div>
+        <Header />
         <div className="flex flex-col w-full flex-1 justify-center overflow-auto">
           <div className="flex flex-col gap-1 w-full h-full max-h-[90%] justify-center">
             {Packs.map((pack, index) => (
@@ -153,7 +127,7 @@ const GameTile = ({
 
       goodLuckTimeout.current = setTimeout(() => {
         setShowGoodLuck(selected);
-      }, 300);
+      }, 400);
     }
 
     if (selected)
@@ -187,7 +161,10 @@ const GameTile = ({
               <h1 className="text-lg md:text-2xl text-[white] font-bold z-10">
                 {title}
               </h1>
-              <Balancer className="text-sm md:text-lg font-thin text-[white] w-[11em] z-10">
+              <Balancer
+                ratio={0.5}
+                className="text-sm md:text-lg font-thin text-[white] w-[15em] z-10"
+              >
                 {caption}
               </Balancer>
             </>
