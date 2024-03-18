@@ -79,7 +79,7 @@ export default function PackSelect() {
             data-disabled={!anySelected}
           >
             <Link
-              className="text-[white] w-full text-center font-bold text-4xl py-5 px-12"
+              className="text-[white] w-full text-center font-bold text-3xl md:text-5xl py-5 md:py-10 px-12"
               href={anySelected ? "/player-select" : "#"}
             >
               {!anySelected ? "No Selection" : "Select"}

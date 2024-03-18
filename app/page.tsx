@@ -47,11 +47,11 @@ export default function Home() {
         </div>
         <div className="flex justify-center items-center active:scale-95">
           <motion.div
-            className="bg-tertiary rounded-lg shadow-md flex"
+            className="bg-tertiary rounded-lg shadow-md flex w-1/2"
             animate={scaleAnimation}
           >
             <Link
-              className="text-[white] font-bold text-4xl py-5 px-12 select-none"
+              className="text-[white] text-center w-full font-bold text-3xl md:text-5xl py-5 md:py-10 px-12 select-none"
               href="/pack-select"
             >
               Play
