@@ -100,7 +100,7 @@ export default function PlayerSelect() {
                 }}
                 disabled={playerCount >= maxPlayers}
               >
-                <p className="absolute text-center justify-center items-center top-1">
+                <p className="absolute text-center justify-center items-center top-2">
                   +
                 </p>
               </button>
