@@ -30,8 +30,6 @@ export default function PlayerSelect() {
   const enoughPlayers = players.length >= minPlayers;
   const isMounted = useRef(false);
 
-  console.log({ players, enoughPlayers });
-
   useEffect(() => {
     isMounted.current = true;
   }, []);
@@ -48,9 +46,6 @@ export default function PlayerSelect() {
     const scrollableElement = scrollableRef.current;
     if (scrollableElement) {
       scrollableElement.addEventListener("scroll", () => {
-        setShowShadows(
-          scrollableElement.scrollHeight > scrollableElement.clientHeight
-        );
         setScrollPercent(
           scrollableElement.scrollTop /
             (scrollableElement.scrollHeight - scrollableElement.clientHeight)
@@ -66,22 +61,56 @@ export default function PlayerSelect() {
     };
   }, [scrollableRef.current]);
 
-  const [showAddPlayer, setShowAddPlayer] = useState(false);
-  const [showRemovePlayer, setShowRemovePlayer] = useState(false);
+  useEffect(() => {
+    setShowShadows(
+      scrollableRef?.current?.scrollHeight >
+        scrollableRef?.current?.clientHeight
+    );
+  }, [playerCount]);
 
   return (
     <div className="flex flex-col h-full w-full items-center justify-center max-w-screen-sm p-5">
       <Header />
-      <div className="flex-[1_0_200px] flex flex-col w-full items-stretch">
-        <div className="flex-auto">header</div>
-        <div className="text-3xl"># of Players</div>
+      <div className="h-1/3 flex flex-col w-full justify-center">
+        <div className="flex flex-col justify-center">
+          <div className="flex-auto flex">
+            <div className="flex-auto flex flex-col items-center justify-center h-full">
+              <button
+                className="text-3xl h-0 w-0 p-7 shadow-lg bg-lightBlack rounded-full text-[white] justify-center items-center flex disabled:opacity-70"
+                onClick={() => {
+                  dispatch({ type: "addPlayer" });
+                }}
+                disabled={playerCount >= maxPlayers}
+              >
+                <p>+</p>
+              </button>
+            </div>
+            <div className="flex-auto flex flex-col items-center justify-center h-full">
+              <header className="text-[96px] md:text-[144px]">
+                {playerCount}
+              </header>
+            </div>
+            <div className="flex-auto flex flex-col items-center justify-center h-full">
+              <button
+                className="text-3xl p-7 h-0 w-0 shadow-lg bg-lightBlack rounded-full text-[white] justify-center items-center flex disabled:opacity-70"
+                onClick={() => {
+                  dispatch({ type: "removePlayer" });
+                }}
+                disabled={playerCount <= 0}
+              >
+                <p>-</p>
+              </button>
+            </div>
+          </div>
+          <div className="text-3xl md:text-5xl text-center"># of Players</div>
+        </div>
       </div>
       {showShadows && scrollPercent > 0 && (
-        <div className="shadow-[0_25px_30px_3px_rgba(0,0,0,0.7)] bg-secondary h-0 w-full z-50" />
+        <div className="shadow-[0_30px_30px_3px_rgba(0,0,0,0.7)] bg-secondary h-0 w-full z-50" />
       )}
       <div
         ref={scrollableRef}
-        className="flex-3 flex flex-wrap justify-center content-start w-full my-2 gap-2 relative overflow-auto scroll-smooth"
+        className="h-2/3 flex flex-wrap justify-center content-start w-full my-6 gap-4 relative overflow-auto scroll-smooth"
       >
         {players.map((player, index) => (
           <PlayerTile
@@ -93,7 +122,7 @@ export default function PlayerSelect() {
         ))}
       </div>
       {showShadows && scrollPercent < 0.99 && (
-        <div className="shadow-[0_-25px_30px_3px_rgba(0,0,0,0.7)] bg-secondary h-0 w-full z-50" />
+        <div className="shadow-[0_-30px_25px_3px_rgba(0,0,0,0.7)] bg-secondary h-0 w-full z-50" />
       )}
       <div
         className="w-full data-[disabled=false]:active:scale-95"
@@ -106,7 +135,7 @@ export default function PlayerSelect() {
               ? scaleAnimation
               : { scale: 1, transition: { duration: 0.3 } }
           }
-          data-disabled={!playerCount}
+          data-disabled={!enoughPlayers}
         >
           <Link
             className="text-[white] w-full text-center font-bold text-4xl py-5 px-12"
@@ -158,26 +187,3 @@ const PlayerTile = ({
     </div>
   );
 };
-
-{
-  /* <TextInput
-        style={{
-          fontSize: 22,
-          textAlign: "center",
-          color: "white",
-          fontFamily: "chalupa",
-          width: "100%",
-          flex: 1,
-          paddingVertical: 17,
-          paddingRight: 25,
-        }}
-        placeholder={name === "" && focused ? "" : `Player ${index + 1}`}
-        placeholderTextColor={"white"}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        onChangeText={(text) =>
-          dispatch({ type: "handleNameChange", payload: { id, name: text } })
-        }
-        value={name}
-      /> */
-}
