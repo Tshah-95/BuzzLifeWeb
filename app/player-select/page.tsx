@@ -76,7 +76,7 @@ export default function PlayerSelect() {
           <div className="flex-auto flex">
             <div className="flex-auto flex flex-col items-center justify-center h-full">
               <button
-                className="text-3xl h-0 w-0 p-7 leading-3 md:text-5xl md:p-10 md:leading-5 shadow-lg bg-lightBlack rounded-full text-[white] justify-center items-center flex disabled:opacity-70"
+                className="text-3xl h-12 w-12 md:text-5xl md:h-16 md:w-16 shadow-lg bg-lightBlack rounded-full text-[white] justify-center items-center flex disabled:opacity-70"
                 onClick={() => {
                   dispatch({ type: "removePlayer" });
                 }}
@@ -92,7 +92,7 @@ export default function PlayerSelect() {
             </div>
             <div className="flex-auto flex flex-col items-center justify-center h-full">
               <button
-                className="text-3xl h-0 w-0 p-7 leading-3 md:text-5xl md:p-10 md:leading-5 shadow-lg bg-lightBlack rounded-full text-[white] justify-center items-center flex disabled:opacity-70"
+                className="text-3xl h-12 w-12 md:text-5xl md:h-16 md:w-16 shadow-lg bg-lightBlack rounded-full text-[white] justify-center items-center flex disabled:opacity-70"
                 onClick={() => {
                   dispatch({ type: "addPlayer" });
                 }}
