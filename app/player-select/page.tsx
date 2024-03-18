@@ -86,7 +86,7 @@ export default function PlayerSelect() {
               </button>
             </div>
             <div className="flex-auto flex flex-col items-center justify-center h-full">
-              <header className="text-[96px] md:text-[144px]">
+              <header className="text-[96px] md:text-[144px] text-lightBlack">
                 {playerCount}
               </header>
             </div>
