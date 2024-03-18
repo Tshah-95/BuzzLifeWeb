@@ -34,6 +34,32 @@ export default function PlayerSelect() {
     isMounted && dispatch({ type: "remapCards" });
   }, [players.length]);
 
+  const scrollableRef = useRef<any>(null);
+  const [scrollPercent, setScrollPercent] = useState(0);
+  const [showShadows, setShowShadows] = useState(false);
+
+  useEffect(() => {
+    const scrollableElement = scrollableRef.current;
+    if (scrollableElement) {
+      scrollableElement.addEventListener("scroll", () => {
+        setShowShadows(
+          scrollableElement.scrollHeight > scrollableElement.clientHeight
+        );
+        setScrollPercent(
+          scrollableElement.scrollTop /
+            (scrollableElement.scrollHeight - scrollableElement.clientHeight)
+        );
+      });
+    }
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      if (scrollableElement) {
+        scrollableElement.removeEventListener("scroll", () => {});
+      }
+    };
+  }, [scrollableRef.current]);
+
   const [showAddPlayer, setShowAddPlayer] = useState(false);
   const [showRemovePlayer, setShowRemovePlayer] = useState(false);
 
@@ -43,8 +69,13 @@ export default function PlayerSelect() {
         <div className="flex-auto">header</div>
         <div className="text-3xl"># of Players</div>
       </div>
-      <div className="flex-3 flex flex-wrap justify-center content-start w-full gap-y-2 bg-tertiary relative overflow-auto scroll-smooth">
-        <div className="w-full bg-gradient-to-b from-lightBlack opacity-20 h-10 absolute -top-5 left-0 z-10" />
+      {showShadows && scrollPercent > 0 && (
+        <div className="shadow-[0_25px_20px_3px_rgba(0,0,0,0.3)] bg-secondary h-0 w-full z-50" />
+      )}
+      <div
+        ref={scrollableRef}
+        className="flex-3 flex flex-wrap justify-center content-start w-full my-2 gap-y-2 relative overflow-auto scroll-smooth"
+      >
         <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
         <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
         <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
@@ -62,23 +93,16 @@ export default function PlayerSelect() {
         <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
         <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
         <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
-        <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
-        <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
-        <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
-        <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
-        <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
-        <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
-        <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
-        <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
-        <div className="bg-secondary w-1/2 h-20 border-primary border-2" />
-        <div className="w-full bg-gradient-to-t from-lightBlack opacity-20 h-10 absolute -bottom-5 left-0 z-10" />
       </div>
+      {showShadows && scrollPercent < 1 && (
+        <div className="shadow-[0_-25px_20px_3px_rgba(0,0,0,0.3)] bg-secondary h-0 w-full z-50" />
+      )}
       <div
         className="w-full data-[disabled=false]:active:scale-95"
         data-disabled={!anyPlayers}
       >
         <motion.div
-          className="rounded-lg shadow-md flex w-full data-[disabled=true]:opacity-75"
+          className="bg-tertiary rounded-lg shadow-md flex w-full data-[disabled=true]:opacity-75"
           animate={
             anyPlayers
               ? scaleAnimation
@@ -87,7 +111,7 @@ export default function PlayerSelect() {
           data-disabled={!playerCount}
         >
           <Link
-            className="text-[white] w-[95%] text-center font-bold text-4xl py-5 px-12"
+            className="text-[white] w-full text-center font-bold text-4xl py-5 px-12"
             href={anyPlayers ? "/player-select" : "#"}
           >
             {!anyPlayers ? "No Selection" : "Select"}

@@ -7,6 +7,10 @@ import { AppContext, useAppContext } from "@/reducers/AppReducer";
 import { packConfig } from "@/constants/variables";
 import Lottie, { LottieRef } from "lottie-react";
 import Balancer from "react-wrap-balancer";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Back from "@/public/back.png";
+import Settings from "@/public/settings.png";
 
 const { classic, pre, guys, gals, chaos } = packConfig;
 const Packs = [classic, pre, guys, gals, chaos];
@@ -26,6 +30,8 @@ export default function PackSelect() {
     dispatch,
   } = useAppContext();
 
+  const router = useRouter();
+
   useEffect(() => {
     dispatch({ type: "generateCards" });
   }, [selectedGames]);
@@ -36,37 +42,61 @@ export default function PackSelect() {
   return (
     <div className="flex flex-col h-full w-full items-center justify-center max-w-screen-sm p-5">
       <div className="flex flex-col justify-center items-center w-full h-full">
-        <div className="flex flex-col gap-1 w-full flex-auto justify-center">
-          {Packs.map((pack, index) => (
-            <GameTile
-              key={pack.id}
-              bgColor={pack.color}
-              selected={selectedGames.includes(pack.id)}
-              onSelect={() => {
-                let updatedGames = null;
-
-                if (selectedGames.includes(pack.id)) {
-                  updatedGames = selectedGames.filter(
-                    (id: string) => id !== pack.id
-                  );
-                } else updatedGames = [...selectedGames, pack.id];
-
-                dispatch({
-                  type: "setSelectedGames",
-                  payload: updatedGames,
-                });
-              }}
-              {...pack}
-              paid={false && pack.paid && !purchased}
+        <div className="flex w-full justify-between items-center">
+          <div className="p-3 -m-3">
+            <Image
+              className="cursor-pointer"
+              width={25}
+              height={25}
+              src={Back}
+              alt="back button"
+              onClick={() => router.back()}
             />
-          ))}
+          </div>
+          <div className="p-3 -m-3">
+            <Image
+              className="cursor-pointer"
+              width={25}
+              height={25}
+              src={Settings}
+              alt="settings button"
+              onClick={() => router.back()}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col w-full flex-1 justify-center overflow-auto">
+          <div className="flex flex-col gap-1 w-full h-full max-h-[90%] justify-center">
+            {Packs.map((pack, index) => (
+              <GameTile
+                key={pack.id}
+                bgColor={pack.color}
+                selected={selectedGames.includes(pack.id)}
+                onSelect={() => {
+                  let updatedGames = null;
+
+                  if (selectedGames.includes(pack.id)) {
+                    updatedGames = selectedGames.filter(
+                      (id: string) => id !== pack.id
+                    );
+                  } else updatedGames = [...selectedGames, pack.id];
+
+                  dispatch({
+                    type: "setSelectedGames",
+                    payload: updatedGames,
+                  });
+                }}
+                {...pack}
+                paid={false && pack.paid && !purchased}
+              />
+            ))}
+          </div>
         </div>
         <div
           className="w-full data-[disabled=false]:active:scale-95"
           data-disabled={!anySelected}
         >
           <motion.div
-            className="bg-tertiary rounded-lg shadow-md flex w-full data-[disabled=true]:opacity-75"
+            className="bg-tertiary rounded-lg shadow-md flex justify-center data-[disabled=true]:opacity-75"
             animate={
               anySelected
                 ? scaleAnimation
@@ -75,7 +105,7 @@ export default function PackSelect() {
             data-disabled={!anySelected}
           >
             <Link
-              className="text-[white] w-[95%] text-center font-bold text-4xl py-5 px-12"
+              className="text-[white] w-full text-center font-bold text-4xl py-5 px-12"
               href={anySelected ? "/player-select" : "#"}
             >
               {!anySelected ? "No Selection" : "Select"}
@@ -137,25 +167,27 @@ const GameTile = ({
 
   return (
     <button
-      className="p-[6px] rounded-lg shadow-lg active:scale-95"
+      className="p-[6px] max-h-[20%] rounded-lg shadow-lg active:scale-95"
       style={{ backgroundColor: bgColor }}
       onClick={onSelect}
     >
-      <div className="flex flex-auto flex-row items-stretch rounded-lg bg-gradient-to-r from-[rgba(255,255,255,0.1)] from-10% via-[rgba(255,255,255,0.3)] via-40% to-[rgba(255,255,255,0.1)] to-90%">
-        <div className="flex justify-center items-center grow-[1]">
-          <div className="h-20 w-20 justify-center items-center">
+      <div className="flex flex-auto h-full flex-row items-stretch rounded-lg bg-gradient-to-r from-[rgba(255,255,255,0.1)] from-10% via-[rgba(255,255,255,0.3)] via-40% to-[rgba(255,255,255,0.1)] to-90%">
+        <div className="flex justify-center items-center flex-1 h-full aspect-square">
+          <div className="h-[90%] aspect-square justify-center items-center">
             <Lottie animationData={img} loop lottieRef={animRef} />
           </div>
         </div>
-        <div className="flex relative flex-col justify-center items-center text-center grow-[3] rounded-lg gap-1 overflow-hidden">
+        <div className="flex relative flex-col justify-center items-center text-center flex-[2_2_0%] rounded-lg gap-1 md:gap-3 overflow-hidden">
           {showGoodLuck ? (
             <div className="flex justify-center items-center text-4xl font-bold text-[white]">
               Good Luck!
             </div>
           ) : (
             <>
-              <h1 className="text-lg text-[white] font-bold z-10">{title}</h1>
-              <Balancer className="text-sm text-[white] w-[13em] z-10">
+              <h1 className="text-lg md:text-2xl text-[white] font-bold z-10">
+                {title}
+              </h1>
+              <Balancer className="text-sm md:text-lg font-thin text-[white] w-[11em] z-10">
                 {caption}
               </Balancer>
             </>
