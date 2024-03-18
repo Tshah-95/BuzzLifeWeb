@@ -7,7 +7,7 @@ export const Header = () => {
   const router = useRouter();
 
   return (
-    <div className="flex w-full justify-between items-center">
+    <div className="flex w-full justify-between items-center py-1 md:py-2">
       <div className="p-3 -m-3 md:p-5 md:-m-5">
         <Image
           className="cursor-pointer md:w-10 md:h-10"
