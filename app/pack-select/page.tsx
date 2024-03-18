@@ -2,8 +2,8 @@
 
 import { motion, useAnimate } from "framer-motion";
 import Link from "next/link";
-import { useContext, useEffect, useRef, useState } from "react";
-import { AppContext, useAppContext } from "@/reducers/AppReducer";
+import { useEffect, useRef, useState } from "react";
+import { useAppContext } from "@/reducers/AppReducer";
 import { packConfig } from "@/constants/variables";
 import Lottie, { LottieRef } from "lottie-react";
 import Balancer from "react-wrap-balancer";

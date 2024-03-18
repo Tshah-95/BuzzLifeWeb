@@ -5,6 +5,7 @@ import Lottie from "lottie-react";
 import smileyBubbles from "../public/smiley-bubbles.json";
 import { easeIn, easeInOut, motion } from "framer-motion";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 
 const scaleAnimation = {
   scale: [1, 1.1, 1],
@@ -16,6 +17,12 @@ const scaleAnimation = {
 };
 
 export default function Home() {
+  const animRef = useRef<any>(null);
+
+  useEffect(() => {
+    animRef.current.setSpeed(0.5);
+  }, [animRef.current]);
+
   return (
     <div className="flex flex-col h-full items-center justify-center max-w-screen-sm p-10">
       <motion.div
@@ -35,7 +42,7 @@ export default function Home() {
       <div className="flex flex-col relative bottom-[10%]">
         <div className="flex justify-center">
           <div className="w-[90%] max-w-[450px] min-h-[200px]">
-            <Lottie animationData={smileyBubbles} loop />
+            <Lottie animationData={smileyBubbles} lottieRef={animRef} loop />
           </div>
         </div>
         <div className="flex justify-center items-center active:scale-95">
@@ -46,6 +53,11 @@ export default function Home() {
             <Link
               className="text-[white] font-bold text-4xl py-5 px-12 select-none"
               href="/pack-select"
+              onClick={() => {
+                const element: HTMLAudioElement | null =
+                  document.getElementById("backgroundMusic") as any;
+                element?.play();
+              }}
             >
               Play
             </Link>
