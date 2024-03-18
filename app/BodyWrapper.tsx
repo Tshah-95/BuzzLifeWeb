@@ -15,7 +15,7 @@ export const BodyWrapper = ({
   }, []);
   return (
     <main
-      className="relative flex w-full justify-center items-center bg-primary overflow-hidden z-10"
+      className="relative flex w-full justify-center items-center bg-primary bg-gradient-to-tr from-[rgba(255,255,255,0.1)] from-45% via-[rgba(255,255,255,0.3)] via-60% to-[rgba(255,255,255,0.1)] to-75% overflow-hidden z-10"
       style={{ height: pageWindow?.innerHeight }}
     >
       <div

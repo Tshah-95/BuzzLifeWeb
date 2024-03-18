@@ -39,10 +39,6 @@ export default function RootLayout({
     <Loader>
       <html lang="en">
         <body className={chaloops.className}>
-          <audio id="backgroundMusic" loop>
-            <source src="/good-night.mp3" type="audio/mpeg" />
-            Your browser does not support the audio element.
-          </audio>
           <BodyWrapper>{children}</BodyWrapper>
         </body>
       </html>

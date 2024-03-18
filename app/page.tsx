@@ -53,11 +53,6 @@ export default function Home() {
             <Link
               className="text-[white] font-bold text-4xl py-5 px-12 select-none"
               href="/pack-select"
-              onClick={() => {
-                const element: HTMLAudioElement | null =
-                  document.getElementById("backgroundMusic") as any;
-                element?.play();
-              }}
             >
               Play
             </Link>
