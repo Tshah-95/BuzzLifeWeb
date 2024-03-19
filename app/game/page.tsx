@@ -227,15 +227,15 @@ export default function Game() {
           className="flex-1 flex flex-col justify-center items-center gap-5 w-full relative"
           style={{ scale: potScale }}
         >
-          {jackpotEnabled && (
+          {jackpotEnabled ? (
             <Image
               src="/pot-of-beer.png"
               alt="A pot with many little beers filling it"
               height={100}
               width={100}
             />
-          )}
-          {jackpotEnabled && (
+          ) : null}
+          {jackpotEnabled ? (
             <div className="absolute">
               <span
                 ref={potRef}
@@ -244,7 +244,7 @@ export default function Game() {
                 {visualJackpot}
               </span>
             </div>
-          )}
+          ) : null}
         </motion.div>
         <motion.div
           className="flex-2 flex flex-col justify-center items-center gap-5 md:gap-10 w-full select-none"
