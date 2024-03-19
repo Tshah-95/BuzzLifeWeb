@@ -16,6 +16,7 @@ import { useAnimation, motion } from "framer-motion";
 
 export default function Game() {
   const { state, dispatch } = useAppContext();
+  const { card, drinkLevel, players, jackpotEnabled } = state;
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => dispatch({ type: "next", removal: undefined }),
@@ -23,35 +24,20 @@ export default function Game() {
     delta: 5,
   });
 
+  const [jackpot, setJackpot] = useState(0);
+  const [visualJackpot, setVisualJackpot] = useState(0);
+  const potRef = useRef(null);
+  const sipsRef = useRef(null);
   const [sipsAddedFromJackpot, setSipsAddedFromJackpot] = useState(0);
+  const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });
+  const [endPosition, setEndPosition] = useState({ x: 0, y: 0 });
+  const [beers, setBeers] = useState([]);
+  const timeout = useRef(null);
+  const jackpotTimeout = useRef(null);
+  const maxIndex = useRef(-1);
+  const pastJackpotAddedAmounts = useRef({});
+  const lastIndexCleared = useRef(-1);
 
-  return (
-    <>
-      <Header />
-      <div {...swipeHandlers} className="w-full flex flex-col flex-auto">
-        {state.card && (
-          <Card
-            state={state}
-            dispatch={dispatch}
-            sipsAddedFromJackpot={sipsAddedFromJackpot}
-          />
-        )}
-      </div>
-      <Footer />
-    </>
-  );
-}
-
-const Card = ({
-  state,
-  dispatch,
-  sipsAddedFromJackpot,
-}: {
-  state: state;
-  dispatch: (value: action) => void;
-  sipsAddedFromJackpot: number;
-}) => {
-  const { card, drinkLevel, players } = state;
   const trueDrinkAmount = Math.abs(card.drinkAmount) + (drinkLevel - 1);
 
   let title = card.header ?? card.format.header;
@@ -65,28 +51,43 @@ const Card = ({
       .join(" vs ");
   }
 
+  console.log(card);
+
+  useEffect(() => {
+    setSipsAddedFromJackpot(0);
+    setJackpot(0);
+    setVisualJackpot(0);
+  }, [jackpotEnabled]);
+
   return (
     <>
-      <div className="flex-1 flex flex-col justify-center gap-5 w-full" />
-      <div className="flex-2 flex flex-col justify-center items-center gap-5 w-full select-none">
-        <Balancer ratio={0.3} className="w-full text-4xl text-center font-bold">
-          {title}
-        </Balancer>
-        <Balancer ratio={0.3} className="text-xl text-center">
-          {card.prompt}
-        </Balancer>
+      <Header />
+      <div {...swipeHandlers} className="w-full flex flex-col flex-auto">
+        <div className="flex-1 flex flex-col justify-center gap-5 w-full" />
+        <div className="flex-2 flex flex-col justify-center items-center gap-5 md:gap-10 w-full select-none">
+          <Balancer
+            ratio={0.3}
+            className="w-full text-4xl md:text-6xl text-center font-bold"
+          >
+            {title}
+          </Balancer>
+          <Balancer ratio={0.5} className="text-xl md:text-3xl text-center">
+            {card.prompt}
+          </Balancer>
+        </div>
+        <div className="flex-1 flex flex-col justify-center items-center w-full gap-2 md:gap-5 select-none">
+          <h3 className="text-2xl md:text-4xl font-bold">{card.drinkHeader}</h3>
+          <p className="text-xl md:text-3xl">
+            {card.sipFlag > 0 ? "take(s)" : "give(s) out"}{" "}
+            <span>{trueDrinkAmount + sipsAddedFromJackpot}</span> sip
+            {trueDrinkAmount > 1 && "s"}
+          </p>
+        </div>
       </div>
-      <div className="flex-1 flex flex-col justify-center items-center w-full select-none">
-        <h3 className="text-2xl font-bold">{card.drinkHeader}</h3>
-        <p className="text-xl">
-          {card.sipFlag > 0 ? "take(s)" : "give(s) out"}{" "}
-          <span>{trueDrinkAmount + sipsAddedFromJackpot}</span> sip
-          {trueDrinkAmount > 1 && "s"}
-        </p>
-      </div>
+      <Footer />
     </>
   );
-};
+}
 
 const options = [
   {
