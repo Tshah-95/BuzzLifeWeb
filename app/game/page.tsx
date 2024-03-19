@@ -73,16 +73,16 @@ export default function Game() {
         index !== lastIndexCleared.current
       ) {
         setVisualJackpot(jackpot);
-        clearTimeout(timeout.current);
-        clearTimeout(jackpotTimeout.current);
+        timeout.current && clearTimeout(timeout.current);
+        jackpotTimeout.current && clearTimeout(jackpotTimeout.current);
       }
 
       lastIndexCleared.current = index;
 
       if (index > prevIndex && index > maxIndex.current && card.isJackpot) {
         //Vibration.vibrate();
-        clearTimeout(timeout.current);
-        clearTimeout(jackpotTimeout.current);
+        timeout.current && clearTimeout(timeout.current);
+        jackpotTimeout.current && clearTimeout(jackpotTimeout.current);
         const reduceJackpotBy = Math.floor(jackpot * card.jackpotReduction);
         pastJackpotAddedAmounts.current[index] = reduceJackpotBy;
 
@@ -104,8 +104,8 @@ export default function Game() {
 
         maxIndex.current = Math.max(maxIndex.current, index);
       } else if (index > prevIndex && index > maxIndex.current) {
-        clearTimeout(timeout.current);
-        clearTimeout(jackpotTimeout.current);
+        timeout.current && clearTimeout(timeout.current);
+        jackpotTimeout.current && clearTimeout(jackpotTimeout.current);
         setJackpot((jp) => jp + trueDrinkAmount ?? 0);
 
         const newBeers = Array.from({ length: trueDrinkAmount }).map((_) => ({
