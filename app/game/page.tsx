@@ -135,6 +135,13 @@ export default function Game() {
       .join(" vs ");
   }
 
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
   useEffect(() => {
     setSipsAddedFromJackpot(0);
     setJackpot(0);
@@ -167,11 +174,61 @@ export default function Game() {
     }
   }, [jackpotEnabled]);
 
+  const potScale = useTransform(
+    progress,
+    card.isJackpot ? [0, 0.025, 0.05, 1] : [0, 0.95, 0.975, 1],
+    card.isJackpot ? [1, 0.8, 1, 1] : [1, 1, 1.2, 1]
+  );
+
+  const [displayText, setDisplayText] = useState(card?.prompt);
+  const [displayTitle, setDisplayTitle] = useState(title);
+  const [displayDrinkHeader, setDisplayDrinkHeader] = useState(
+    card.drinkHeader
+  );
+  const [displayDrinkAmount, setDisplayDrinkAmount] = useState(
+    trueDrinkAmount + sipsAddedFromJackpot
+  );
+
+  useEffect(() => {
+    const cardAnimation = async () => {
+      cardChangeAnimProgress.set(prevIndex > index ? 1 : 0);
+      await animate(cardChangeAnimProgress, 0.5, { duration: 0.2 });
+      setDisplayText(card?.prompt);
+      setDisplayTitle(title);
+      setDisplayDrinkHeader(card.drinkHeader);
+      setDisplayDrinkAmount(trueDrinkAmount + sipsAddedFromJackpot);
+      await animate(cardChangeAnimProgress, prevIndex > index ? 0 : 1, {
+        duration: 0.2,
+      });
+    };
+
+    isMounted && cardAnimation();
+  }, [index]);
+
+  const promptOpacity = useTransform(
+    cardChangeAnimProgress,
+    [0, 0.4, 0.6, 1],
+    [1, 0, 0, 1]
+  );
+  const promptX = useTransform(
+    cardChangeAnimProgress,
+    [0, 0.4, 0.6, 1],
+    [0, -200, 200, 0]
+  );
+  const drinkScale = useTransform(
+    cardChangeAnimProgress,
+    [0, 0.4, 0.6, 1],
+    [1, 0.3, 0.3, 1]
+  );
+
   return (
     <>
       <Header />
       <div {...swipeHandlers} className="w-full flex flex-col flex-auto">
-        <div className="flex-1 flex flex-col justify-center items-center gap-5 w-full relative">
+        <motion.div
+          className="flex-1 flex flex-col justify-center items-center gap-5 w-full relative"
+          style={{ scale: potScale }}
+        >
           <Image
             src="/pot-of-beer.png"
             alt="A pot with many little beers filling it"
@@ -186,27 +243,34 @@ export default function Game() {
               {visualJackpot}
             </span>
           </div>
-        </div>
-        <div className="flex-2 flex flex-col justify-center items-center gap-5 md:gap-10 w-full select-none">
+        </motion.div>
+        <motion.div
+          className="flex-2 flex flex-col justify-center items-center gap-5 md:gap-10 w-full select-none"
+          style={{ opacity: promptOpacity, x: promptX }}
+        >
           <Balancer
             ratio={0.3}
             className="w-full text-4xl md:text-6xl text-center font-bold"
           >
-            {title}
+            {displayTitle}
           </Balancer>
           <Balancer ratio={0.5} className="text-xl md:text-3xl text-center">
-            {card.prompt}
+            {displayText}
           </Balancer>
-        </div>
-        <div className="flex-1 flex flex-col justify-center items-center w-full gap-2 md:gap-5 select-none">
-          <h3 className="text-2xl md:text-4xl font-bold">{card.drinkHeader}</h3>
+        </motion.div>
+        <motion.div
+          className="flex-1 flex flex-col justify-center items-center w-full gap-2 md:gap-5 select-none"
+          style={{ scale: drinkScale }}
+        >
+          <h3 className="text-2xl md:text-4xl font-bold">
+            {displayDrinkHeader}
+          </h3>
           <p className="text-xl md:text-3xl">
             {card.sipFlag > 0 ? "take(s)" : "give(s) out"}{" "}
-            <span ref={sipsRef}>{trueDrinkAmount + sipsAddedFromJackpot}</span>{" "}
-            sip
-            {trueDrinkAmount > 1 && "s"}
+            <span ref={sipsRef}>{displayDrinkAmount}</span> sip
+            {displayDrinkAmount > 1 && "s"}
           </p>
-        </div>
+        </motion.div>
       </div>
       <Footer />
       {beers.map((beer) => (
