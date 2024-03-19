@@ -64,7 +64,7 @@ export const BodyWrapper = ({
           </div>
         )}
 
-        <div className="flex flex-col h-full w-full items-center justify-center max-w-screen-sm p-5 text-lightblack">
+        <div className="flex flex-col h-full w-full items-center justify-center max-w-screen-sm p-5 text-lightblack relative">
           {children}
         </div>
       </motion.div>

@@ -38,8 +38,8 @@ export const initialState: state = {
   drinkLevel: 1,
   hapticsEnabled: 1,
   prevHapticsEnabled: 0,
-  jackpotEnabled: 0,
-  prevJackpotEnabled: 1,
+  jackpotEnabled: 1,
+  prevJackpotEnabled: 0,
   soundEnabled: 0,
   prevSoundEnabled: 1,
   openModal: null,
@@ -73,9 +73,9 @@ export type state = {
 export type baseCard = {
   uuid: string;
   cardType: string;
-  header: string | undefined;
+  header?: string;
   prompt: string;
-  drinkHeader: string | undefined;
+  drinkHeader?: string;
   sipFlag: -3 | -2 | -1 | 0 | 1 | 2 | 3;
 };
 
@@ -162,7 +162,7 @@ export type action =
     }
   | {
       type: "next";
-      removal: boolean | undefined;
+      removal?: boolean;
     }
   | {
       type: "prev";
@@ -176,7 +176,7 @@ export type action =
     }
   | {
       type: "hydrate";
-      payload: state | undefined;
+      payload?: state;
     };
 
 export const AppReducer = (state: state, action: action) => {
