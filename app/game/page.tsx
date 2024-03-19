@@ -185,9 +185,7 @@ export default function Game() {
   const [displayDrinkHeader, setDisplayDrinkHeader] = useState(
     card.drinkHeader
   );
-  const [displayDrinkAmount, setDisplayDrinkAmount] = useState(
-    trueDrinkAmount + sipsAddedFromJackpot
-  );
+  const [displayDrinkAmount, setDisplayDrinkAmount] = useState(trueDrinkAmount);
 
   useEffect(() => {
     const cardAnimation = async () => {
@@ -196,7 +194,7 @@ export default function Game() {
       setDisplayText(card?.prompt);
       setDisplayTitle(title);
       setDisplayDrinkHeader(card.drinkHeader);
-      setDisplayDrinkAmount(trueDrinkAmount + sipsAddedFromJackpot);
+      setDisplayDrinkAmount(trueDrinkAmount);
       await animate(cardChangeAnimProgress, prevIndex > index ? 0 : 1, {
         duration: 0.2,
       });
@@ -267,7 +265,10 @@ export default function Game() {
           </h3>
           <p className="text-xl md:text-3xl">
             {card.sipFlag > 0 ? "take(s)" : "give(s) out"}{" "}
-            <span ref={sipsRef}>{displayDrinkAmount}</span> sip
+            <span ref={sipsRef}>
+              {displayDrinkAmount + sipsAddedFromJackpot}
+            </span>{" "}
+            sip
             {displayDrinkAmount > 1 && "s"}
           </p>
         </motion.div>
