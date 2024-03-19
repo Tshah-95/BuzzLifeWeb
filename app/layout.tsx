@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Loader } from "./Loader";
 import { BodyWrapper } from "./BodyWrapper";
 import { Analytics } from "@vercel/analytics/react";
+import { CSPostHogProvider } from "./posthog-wrapper";
 
 const chaloops = localFont({
   src: [
@@ -39,10 +40,12 @@ export default function RootLayout({
   return (
     <Loader>
       <html lang="en">
-        <body className={chaloops.className}>
-          <BodyWrapper>{children}</BodyWrapper>
-          <Analytics />
-        </body>
+        <CSPostHogProvider>
+          <body className={chaloops.className}>
+            <BodyWrapper>{children}</BodyWrapper>
+            <Analytics />
+          </body>
+        </CSPostHogProvider>
       </html>
     </Loader>
   );
