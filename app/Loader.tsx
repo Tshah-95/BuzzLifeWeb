@@ -8,7 +8,7 @@ import {
   state,
 } from "@/reducers/AppReducer";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useReducer, useRef } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 
 export const Loader = ({
   children,
@@ -17,7 +17,7 @@ export const Loader = ({
 }>) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
   const pathname = usePathname();
-  let isMounted = useRef(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   // Wrap your save function in a useCallback hook with debounce
   const debouncedSave = useCallback(
@@ -33,12 +33,12 @@ export const Loader = ({
       type: "hydrate",
       payload: savedState ? JSON.parse(savedState) : initialState,
     });
-    isMounted.current = true;
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
     // Call the debounced function inside your effect
-    isMounted.current && debouncedSave(state);
+    isMounted && debouncedSave(state);
   }, [state, debouncedSave]);
 
   return (
