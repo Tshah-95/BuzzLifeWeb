@@ -4,6 +4,7 @@ import "./globals.css";
 import Image from "next/image";
 import { Loader } from "./Loader";
 import { BodyWrapper } from "./BodyWrapper";
+import { Analytics } from "@vercel/analytics/react";
 
 const chaloops = localFont({
   src: [
@@ -40,6 +41,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={chaloops.className}>
           <BodyWrapper>{children}</BodyWrapper>
+          <Analytics />
         </body>
       </html>
     </Loader>
