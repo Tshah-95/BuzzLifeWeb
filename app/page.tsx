@@ -24,7 +24,7 @@ export default function Home() {
   }, [animRef.current]);
 
   return (
-    <div className="flex flex-col h-full items-center justify-center max-w-screen-sm p-10">
+    <>
       <motion.div
         className="flex justify-center items-center"
         animate={scaleAnimation}
@@ -51,7 +51,7 @@ export default function Home() {
             animate={scaleAnimation}
           >
             <Link
-              className="text-[white] text-center w-full font-bold text-3xl md:text-5xl py-5 md:py-10 px-12 select-none"
+              className="text-white text-center w-full font-bold text-3xl md:text-5xl py-5 md:py-10 px-12 select-none"
               href="/pack-select"
             >
               Play
@@ -59,6 +59,6 @@ export default function Home() {
           </motion.div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

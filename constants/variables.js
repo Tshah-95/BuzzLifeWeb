@@ -35,8 +35,8 @@ export const colors = {
   primary: "#ccccff",
   secondary: "#E32565",
   tertiary: "#3B99FB",
-  lightBlue: "#33DDFF",
-  lightBlack: "#121212",
+  lightblue: "#33DDFF",
+  lightblack: "#121212",
 };
 
 export const CARD_TYPES = {
@@ -82,7 +82,7 @@ export const gameSettings = {
   },
   do_and_drink: {
     header: "Do and Drink",
-    color: colors.lightBlue,
+    color: colors.lightblue,
     card_type: CARD_TYPES.INDIVIDUAL,
   },
   rizztraining_order: {
@@ -165,7 +165,7 @@ export const packConfig = {
   chaos: {
     id: "chaos",
     title: "Chaos",
-    color: colors.lightBlack,
+    color: colors.lightblack,
     img: impSmile,
     imgSpeed: 1,
     caption: "Not meant for the faint of heart",

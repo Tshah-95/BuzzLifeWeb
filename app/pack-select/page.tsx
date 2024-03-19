@@ -35,59 +35,57 @@ export default function PackSelect() {
   const anySelected = selectedGames.length > 0;
 
   return (
-    <div className="flex flex-col h-full w-full items-center justify-center max-w-screen-sm p-5">
-      <div className="flex flex-col justify-center items-center w-full h-full">
-        <Header />
-        <div className="flex flex-col w-full flex-1 justify-center overflow-auto">
-          <div className="flex flex-col gap-1 w-full h-full max-h-[90%] justify-center">
-            {Packs.map((pack, index) => (
-              <GameTile
-                key={pack.id}
-                bgColor={pack.color}
-                selected={selectedGames.includes(pack.id)}
-                onSelect={() => {
-                  let updatedGames = null;
+    <>
+      <Header />
+      <div className="flex flex-col w-full flex-1 justify-center overflow-auto">
+        <div className="flex flex-col gap-1 w-full h-full max-h-[90%] justify-center">
+          {Packs.map((pack, index) => (
+            <GameTile
+              key={pack.id}
+              bgColor={pack.color}
+              selected={selectedGames.includes(pack.id)}
+              onSelect={() => {
+                let updatedGames = null;
 
-                  if (selectedGames.includes(pack.id)) {
-                    updatedGames = selectedGames.filter(
-                      (id: string) => id !== pack.id
-                    );
-                  } else updatedGames = [...selectedGames, pack.id];
+                if (selectedGames.includes(pack.id)) {
+                  updatedGames = selectedGames.filter(
+                    (id: string) => id !== pack.id
+                  );
+                } else updatedGames = [...selectedGames, pack.id];
 
-                  dispatch({
-                    type: "setSelectedGames",
-                    payload: updatedGames,
-                  });
-                }}
-                {...pack}
-                paid={false && pack.paid && !purchased}
-              />
-            ))}
-          </div>
-        </div>
-        <div
-          className="w-full data-[disabled=false]:active:scale-95"
-          data-disabled={!anySelected}
-        >
-          <motion.div
-            className="bg-tertiary rounded-lg shadow-md flex justify-center data-[disabled=true]:opacity-75"
-            animate={
-              anySelected
-                ? scaleAnimation
-                : { scale: 1, transition: { duration: 0.3 } }
-            }
-            data-disabled={!anySelected}
-          >
-            <Link
-              className="text-[white] w-full text-center font-bold text-3xl md:text-5xl py-5 md:py-10 px-12"
-              href={anySelected ? "/player-select" : "#"}
-            >
-              {!anySelected ? "No Selection" : "Select"}
-            </Link>
-          </motion.div>
+                dispatch({
+                  type: "setSelectedGames",
+                  payload: updatedGames,
+                });
+              }}
+              {...pack}
+              paid={false && pack.paid && !purchased}
+            />
+          ))}
         </div>
       </div>
-    </div>
+      <div
+        className="w-full data-[disabled=false]:active:scale-95"
+        data-disabled={!anySelected}
+      >
+        <motion.div
+          className="bg-tertiary rounded-lg shadow-md flex justify-center data-[disabled=true]:opacity-75"
+          animate={
+            anySelected
+              ? scaleAnimation
+              : { scale: 1, transition: { duration: 0.3 } }
+          }
+          data-disabled={!anySelected}
+        >
+          <Link
+            className="text-white w-full text-center font-bold text-3xl md:text-5xl py-5 md:py-10 px-12"
+            href={anySelected ? "/player-select" : "#"}
+          >
+            {!anySelected ? "No Selection" : "Select"}
+          </Link>
+        </motion.div>
+      </div>
+    </>
   );
 }
 
@@ -153,24 +151,24 @@ const GameTile = ({
         </div>
         <div className="flex relative flex-col justify-center items-center text-center flex-[2_2_0%] rounded-lg gap-1 md:gap-3 overflow-hidden">
           {showGoodLuck ? (
-            <div className="flex justify-center items-center text-4xl font-bold text-[white]">
+            <div className="flex justify-center items-center text-4xl font-bold text-white">
               Good Luck!
             </div>
           ) : (
             <>
-              <h1 className="text-lg md:text-2xl text-[white] font-bold z-10">
+              <h1 className="text-lg md:text-2xl text-white font-bold z-10">
                 {title}
               </h1>
               <Balancer
                 ratio={0.5}
-                className="text-sm md:text-lg font-thin text-[white] w-[15em] z-10"
+                className="text-sm md:text-lg font-thin text-white w-[15em] z-10"
               >
                 {caption}
               </Balancer>
             </>
           )}
           <div
-            className="absolute w-full h-full rounded-lg bg-lightBlack"
+            className="absolute w-full h-full rounded-lg bg-lightblack"
             style={{
               opacity: id === "classic" || id === "pre" ? 0.15 : 0.25,
             }}

@@ -7,14 +7,14 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    colors: {
-      primary: "#ccccff",
-      secondary: "#E32565",
-      tertiary: "#3B99FB",
-      lightBlue: "#33DDFF",
-      lightBlack: "#121212",
-    },
     extend: {
+      colors: {
+        primary: "#ccccff",
+        secondary: "#E32565",
+        tertiary: "#3B99FB",
+        lightblue: "#33DDFF",
+        lightblack: "#121212",
+      },
       flex: {
         "2": "2 2 auto",
         "3": "3 3 auto",

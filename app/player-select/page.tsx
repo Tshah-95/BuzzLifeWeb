@@ -69,14 +69,14 @@ export default function PlayerSelect() {
   }, [playerCount]);
 
   return (
-    <div className="flex flex-col h-full w-full items-center justify-center max-w-screen-sm p-5">
+    <>
       <Header />
       <div className="h-1/3 flex flex-col w-full justify-center">
         <div className="flex flex-col justify-center">
           <div className="flex-auto flex">
-            <div className="flex-auto flex flex-col items-center justify-center h-full">
+            <div className="w-1/3 flex flex-col items-center justify-center h-full">
               <button
-                className="text-3xl relative h-12 w-12 md:text-5xl md:h-16 md:w-16 shadow-lg bg-lightBlack rounded-full text-[white] justify-center items-center flex disabled:opacity-70"
+                className="text-3xl relative h-12 w-12 md:text-5xl md:h-16 md:w-16 shadow-lg bg-lightblack rounded-full text-white justify-center items-center flex disabled:opacity-70"
                 onClick={() => {
                   dispatch({ type: "removePlayer" });
                 }}
@@ -87,14 +87,14 @@ export default function PlayerSelect() {
                 </p>
               </button>
             </div>
-            <div className="flex-auto flex flex-col items-center justify-center h-full">
-              <header className="text-[96px] md:text-[144px] text-lightBlack">
+            <div className="w-1/3 flex flex-col items-center justify-center h-full">
+              <header className="text-[96px] md:text-[144px] text-lightblack">
                 {playerCount}
               </header>
             </div>
-            <div className="flex-auto flex flex-col items-center justify-center h-full">
+            <div className="w-1/3 flex flex-col items-center justify-center h-full">
               <button
-                className="text-3xl relative h-12 w-12 md:text-5xl md:h-16 md:w-16 shadow-lg bg-lightBlack rounded-full text-[white] justify-center items-center flex disabled:opacity-70"
+                className="text-3xl relative h-12 w-12 md:text-5xl md:h-16 md:w-16 shadow-lg bg-lightblack rounded-full text-white justify-center items-center flex disabled:opacity-70"
                 onClick={() => {
                   dispatch({ type: "addPlayer" });
                 }}
@@ -106,7 +106,7 @@ export default function PlayerSelect() {
               </button>
             </div>
           </div>
-          <div className="text-3xl md:text-5xl text-center text-lightBlack">
+          <div className="text-3xl md:text-5xl text-center text-lightblack">
             # of Players
           </div>
         </div>
@@ -144,14 +144,14 @@ export default function PlayerSelect() {
           data-disabled={!enoughPlayers}
         >
           <Link
-            className="text-[white] w-full text-center font-bold text-3xl md:text-5xl py-5 md:py-10 px-12"
-            href={enoughPlayers ? "/player-select" : "#"}
+            className="text-white w-full text-center font-bold text-3xl md:text-5xl py-5 md:py-10 px-12"
+            href={enoughPlayers ? "/game" : "#"}
           >
             {!enoughPlayers ? "Need 2+ Players" : "Begin"}
           </Link>
         </motion.div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -176,10 +176,10 @@ const PlayerTile = ({
         className="p-4"
         onClick={() => dispatch({ type: "removePlayerById", payload: id })}
       >
-        <p className="font-bold text-sm md:text-2xl text-[white]">x</p>
+        <p className="font-bold text-sm md:text-2xl text-white">x</p>
       </button>
       <input
-        className="text-2xl md:text-4xl text-center text-[white] bg-secondary py-5 md:py-10 mr-5 w-full flex rounded-lg placeholder:text-[white] placeholder:opacity-80"
+        className="text-2xl md:text-4xl text-center text-white bg-secondary py-5 md:py-10 mr-5 w-full flex rounded-lg placeholder:text-white placeholder:opacity-70"
         type="text"
         placeholder={name === "" && focused ? "" : `Player ${index + 1}`}
         value={name}

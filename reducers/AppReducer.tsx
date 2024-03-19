@@ -43,6 +43,8 @@ export const initialState: state = {
   soundEnabled: 0,
   prevSoundEnabled: 1,
   openModal: null,
+  isOnGameScreen: false,
+  isHydrated: false,
 };
 
 export type state = {
@@ -66,6 +68,8 @@ export type state = {
   soundEnabled: number;
   prevSoundEnabled: number;
   openModal: any;
+  isOnGameScreen: boolean;
+  isHydrated: boolean;
 };
 
 export type baseCard = {
@@ -144,10 +148,6 @@ export type action =
       payload: number;
     }
   | {
-      type: "handleFocusChange";
-      payload: any;
-    }
-  | {
       type: "handleNameChange";
       payload: any;
     }
@@ -157,7 +157,6 @@ export type action =
     }
   | {
       type: "changeDrinkLevel";
-      payload: any;
     }
   | {
       type: "setRemovedCards";
@@ -165,7 +164,6 @@ export type action =
     }
   | {
       type: "next";
-      payload: any;
       removal: boolean | undefined;
     }
   | {
@@ -175,10 +173,24 @@ export type action =
   | {
       type: "openModal";
       payload: any;
+    }
+  | {
+      type: "isOnGameScreen";
+      payload: boolean;
+    }
+  | {
+      type: "hydrate";
+      payload: state | undefined;
     };
 
 export const AppReducer = (state: state, action: action) => {
   switch (action.type) {
+    case "hydrate":
+      return {
+        ...state,
+        ...action.payload,
+        isHydrated: true,
+      };
     case "setOfferings":
       return {
         ...state,
@@ -290,18 +302,10 @@ export const AppReducer = (state: state, action: action) => {
         players: state.players.filter((player) => player.id !== action.payload),
       };
     }
-    case "handleFocusChange": {
+    case "isOnGameScreen": {
       return {
         ...state,
-        players: state.players.map((player) => {
-          if (player.id === action.payload.id) {
-            return {
-              ...player,
-              focused: action.payload.focused,
-            };
-          }
-          return player;
-        }),
+        isOnGameScreen: action.payload,
       };
     }
     case "handleNameChange":
