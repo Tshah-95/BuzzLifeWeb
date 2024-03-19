@@ -221,26 +221,30 @@ export default function Game() {
 
   return (
     <>
-      <Header />
+      <Header showJackpotSwitch />
       <div {...swipeHandlers} className="w-full flex flex-col flex-auto">
         <motion.div
           className="flex-1 flex flex-col justify-center items-center gap-5 w-full relative"
           style={{ scale: potScale }}
         >
-          <Image
-            src="/pot-of-beer.png"
-            alt="A pot with many little beers filling it"
-            height={100}
-            width={100}
-          />
-          <div className="absolute">
-            <span
-              ref={potRef}
-              className="relative top-2 font-bold text-xl text-white"
-            >
-              {visualJackpot}
-            </span>
-          </div>
+          {jackpotEnabled && (
+            <Image
+              src="/pot-of-beer.png"
+              alt="A pot with many little beers filling it"
+              height={100}
+              width={100}
+            />
+          )}
+          {jackpotEnabled && (
+            <div className="absolute">
+              <span
+                ref={potRef}
+                className="relative top-2 font-bold text-xl text-white"
+              >
+                {visualJackpot}
+              </span>
+            </div>
+          )}
         </motion.div>
         <motion.div
           className="flex-2 flex flex-col justify-center items-center gap-5 md:gap-10 w-full select-none"

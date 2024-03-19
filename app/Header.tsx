@@ -5,7 +5,7 @@ import JackpotOff from "@/public/jackpot-off.png";
 import Back from "@/public/back.png";
 import { useAppContext } from "@/reducers/AppReducer";
 
-export const Header = () => {
+export const Header = ({ showJackpotSwitch = false }) => {
   const router = useRouter();
   const { state, dispatch } = useAppContext();
 
@@ -21,21 +21,23 @@ export const Header = () => {
           onClick={() => router.back()}
         />
       </button>
-      <button className="p-3 -m-3 md:p-5 md:-m-5 active:scale-95">
-        <Image
-          className="cursor-pointer md:w-10 md:h-10"
-          width={25}
-          height={25}
-          src={state.jackpotEnabled ? JackpotOn : JackpotOff}
-          alt="back button"
-          onClick={() =>
-            dispatch({
-              type: "setJackpotEnabled",
-              payload: !state.jackpotEnabled,
-            })
-          }
-        />
-      </button>
+      {showJackpotSwitch && (
+        <button className="p-3 -m-3 md:p-5 md:-m-5 active:scale-95">
+          <Image
+            className="cursor-pointer md:w-10 md:h-10"
+            width={25}
+            height={25}
+            src={state.jackpotEnabled ? JackpotOn : JackpotOff}
+            alt="back button"
+            onClick={() =>
+              dispatch({
+                type: "setJackpotEnabled",
+                payload: !state.jackpotEnabled,
+              })
+            }
+          />
+        </button>
+      )}
     </div>
   );
 };
