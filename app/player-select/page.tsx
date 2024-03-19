@@ -76,7 +76,7 @@ export default function PlayerSelect() {
           <div className="flex-auto flex">
             <div className="w-1/3 flex flex-col items-center justify-center h-full">
               <button
-                className="text-3xl relative h-12 w-12 md:text-5xl md:h-16 md:w-16 shadow-lg bg-lightblack rounded-full text-white justify-center items-center flex disabled:opacity-70"
+                className="text-3xl relative h-12 w-12 md:text-5xl md:h-16 active:scale-95 md:w-16 shadow-lg bg-lightblack rounded-full text-white justify-center items-center flex disabled:opacity-70"
                 onClick={() => {
                   dispatch({ type: "removePlayer" });
                 }}
@@ -94,7 +94,7 @@ export default function PlayerSelect() {
             </div>
             <div className="w-1/3 flex flex-col items-center justify-center h-full">
               <button
-                className="text-3xl relative h-12 w-12 md:text-5xl md:h-16 md:w-16 shadow-lg bg-lightblack rounded-full text-white justify-center items-center flex disabled:opacity-70"
+                className="text-3xl relative h-12 w-12 md:text-5xl md:h-16 md:w-16 shadow-lg active:scale-95 bg-lightblack rounded-full text-white justify-center items-center flex disabled:opacity-70"
                 onClick={() => {
                   dispatch({ type: "addPlayer" });
                 }}
@@ -173,7 +173,7 @@ const PlayerTile = ({
       className="flex items-center justify-center bg-secondary rounded-lg shadow-md max-w-[45%]"
     >
       <button
-        className="p-4"
+        className="p-4 active:scale-95"
         onClick={() => dispatch({ type: "removePlayerById", payload: id })}
       >
         <p className="font-bold text-sm md:text-2xl text-white">x</p>

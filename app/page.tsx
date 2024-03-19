@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <>
       <motion.div
-        className="flex justify-center items-center"
+        className="flex mt-5 justify-center items-center"
         animate={scaleAnimation}
       >
         <div className="h-full w-[90%] max-w-[450px] max-h-full relative justify-center items-center">

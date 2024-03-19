@@ -48,10 +48,10 @@ export const CARD_TYPES = {
 
 export const gameColors = [
   "#A17EA8",
-  "#95C9C0",
-  "#C7C09B",
-  "#E9F0EE",
   "#C69DCF",
+  "#C7C09B",
+  "#F9C0BB",
+  "#95C9C0",
 ];
 
 export const gameSettings = {

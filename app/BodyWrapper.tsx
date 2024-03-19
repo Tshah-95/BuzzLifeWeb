@@ -7,8 +7,6 @@ import { useAppContext } from "@/reducers/AppReducer";
 import { useAnimation, motion } from "framer-motion";
 import { colors, gameColors } from "@/constants/variables";
 
-const randomNum = gameColors.length * Math.random();
-
 export const BodyWrapper = ({
   children,
 }: Readonly<{
@@ -28,7 +26,7 @@ export const BodyWrapper = ({
   useEffect(() => {
     if (isOnGameScreen) {
       controls.start({
-        backgroundColor: gameColors[(index + randomNum) % gameColors.length],
+        backgroundColor: gameColors[index % gameColors.length],
       });
     } else {
       controls.start({ backgroundColor: "#ccccff" });
@@ -46,7 +44,7 @@ export const BodyWrapper = ({
         className="relative flex w-full h-full justify-center items-center bg-primary bg-gradient-to-tr from-[rgba(255,255,255,0.1)] from-45% via-[rgba(255,255,255,0.3)] via-60% to-[rgba(255,255,255,0.1)] to-75% overflow-hidden z-10"
         animate={controls}
         initial={{ backgroundColor: "#ccccff" }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.8 }}
       >
         {!isOnGameScreen && (
           <div
