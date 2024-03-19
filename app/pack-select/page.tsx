@@ -149,7 +149,7 @@ const GameTile = ({
             <Lottie animationData={img} loop lottieRef={animRef} />
           </div>
         </div>
-        <div className="flex relative flex-col justify-center items-center text-center flex-[2_2_0%] rounded-lg gap-1 md:gap-3 overflow-hidden">
+        <div className="flex relative flex-col justify-center items-center text-center flex-2 rounded-lg gap-1 md:gap-3 overflow-hidden">
           {showGoodLuck ? (
             <div className="flex justify-center items-center text-4xl font-bold text-white">
               Good Luck!

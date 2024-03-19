@@ -168,7 +168,6 @@ export type action =
     }
   | {
       type: "prev";
-      payload: any;
     }
   | {
       type: "openModal";

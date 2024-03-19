@@ -2,30 +2,95 @@
 
 import Lottie from "lottie-react";
 import { Header } from "../Header";
-import { useEffect, useRef } from "react";
-import { useAppContext } from "@/reducers/AppReducer";
+import { useEffect, useRef, useState } from "react";
+import {
+  action,
+  formatPlayerName,
+  state,
+  useAppContext,
+} from "@/reducers/AppReducer";
+import { useSwipeable } from "react-swipeable";
+import Balancer from "react-wrap-balancer";
+import { CARD_TYPES } from "@/constants/variables";
 
 export default function Game() {
-  const {
-    state: { players, index, prevIndex, card, drinkLevel, jackpotEnabled },
-    dispatch,
-  } = useAppContext();
+  const { state, dispatch } = useAppContext();
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => dispatch({ type: "next", removal: undefined }),
+    onSwipedRight: () => dispatch({ type: "prev" }),
+    delta: 5,
+  });
+
+  const [sipsAddedFromJackpot, setSipsAddedFromJackpot] = useState(0);
 
   useEffect(() => {
     dispatch({ type: "isOnGameScreen", payload: true });
-    return () => {
-      dispatch({ type: "isOnGameScreen", payload: false });
-    };
+    return () => dispatch({ type: "isOnGameScreen", payload: false });
   }, []);
 
   return (
     <>
       <Header />
-      <div className="w-full flex-auto"></div>
+      <div {...swipeHandlers} className="w-full flex flex-col flex-auto">
+        {state.card && (
+          <Card
+            state={state}
+            dispatch={dispatch}
+            sipsAddedFromJackpot={sipsAddedFromJackpot}
+          />
+        )}
+      </div>
       <Footer />
     </>
   );
 }
+
+const Card = ({
+  state,
+  dispatch,
+  sipsAddedFromJackpot,
+}: {
+  state: state;
+  dispatch: (value: action) => void;
+  sipsAddedFromJackpot: number;
+}) => {
+  const { card, drinkLevel, players } = state;
+  const trueDrinkAmount = Math.abs(card.drinkAmount) + (drinkLevel - 1);
+
+  let title = card.header ?? card.format.header;
+
+  if (card.cardType === CARD_TYPES.INDIVIDUAL) {
+    const activeIndex = card.activePlayersIndicies[0];
+    title = formatPlayerName(players[activeIndex], activeIndex);
+  } else if (card.cardType === CARD_TYPES.HEAD_TO_HEAD) {
+    title = card.activePlayersIndicies
+      .map((i: number) => formatPlayerName(players[i], i))
+      .join(" vs ");
+  }
+
+  return (
+    <>
+      <div className="flex-1 flex flex-col justify-center gap-5 w-full" />
+      <div className="flex-2 flex flex-col justify-center items-center gap-5 w-full">
+        <Balancer ratio={0.3} className="w-full text-4xl text-center font-bold">
+          {title}
+        </Balancer>
+        <Balancer ratio={0.3} className="text-xl text-center">
+          {card.prompt}
+        </Balancer>
+      </div>
+      <div className="flex-1 flex flex-col justify-center items-center w-full">
+        <h3 className="text-2xl font-bold">{card.drinkHeader}</h3>
+        <p className="text-xl">
+          {card.sipFlag > 0 ? "take(s)" : "give(s) out"}{" "}
+          <span>{trueDrinkAmount + sipsAddedFromJackpot}</span> sip
+          {trueDrinkAmount > 1 && "s"}
+        </p>
+      </div>
+    </>
+  );
+};
 
 const Footer = () => {
   const clinkingBeersRef = useRef(null);

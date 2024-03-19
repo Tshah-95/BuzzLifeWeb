@@ -7,6 +7,7 @@ import {
   initialState,
   state,
 } from "@/reducers/AppReducer";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useReducer, useRef } from "react";
 
 export const Loader = ({
@@ -14,22 +15,35 @@ export const Loader = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const [state, dispatch] = useReducer(AppReducer, initialState, () => {
-    const savedState = localStorage.getItem("myAppState");
-    return savedState ? JSON.parse(savedState) : initialState;
-  });
+  const [state, dispatch] = useReducer(AppReducer, initialState);
+  const pathname = usePathname();
+  let isMounted = useRef(false);
 
   // Wrap your save function in a useCallback hook with debounce
   const debouncedSave = useCallback(
     debounce((state: state) => {
-      localStorage.setItem("myAppState", JSON.stringify(state));
+      localStorage.setItem(
+        "myAppState",
+        JSON.stringify({ ...state, isOnGameScreen: false })
+      );
     }, 2000),
     []
   ); // Adjust the debounce time (500ms) as needed
 
   useEffect(() => {
+    const savedState = localStorage.getItem("myAppState");
+    dispatch({
+      type: "hydrate",
+      payload: savedState
+        ? { ...JSON.parse(savedState), isOnGameScreen: pathname === "/game" }
+        : initialState,
+    });
+    isMounted.current = true;
+  }, []);
+
+  useEffect(() => {
     // Call the debounced function inside your effect
-    debouncedSave(state);
+    isMounted.current && debouncedSave(state);
   }, [state, debouncedSave]);
 
   return (
