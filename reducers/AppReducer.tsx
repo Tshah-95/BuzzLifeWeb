@@ -179,7 +179,13 @@ export type action =
       payload?: state;
     };
 
-export const AppReducer = (state: state, action: action) => {
+export const AppReducer = (stateRaw: state, action: action) => {
+  const state = {
+    ...stateRaw,
+    index: stateRaw.index % stateRaw.cards.length,
+    prevIndex: stateRaw.prevIndex % stateRaw.cards.length,
+    maxIndex: stateRaw.maxIndex % stateRaw.cards.length,
+  };
   switch (action.type) {
     case "hydrate":
       let retVal = {
@@ -188,7 +194,11 @@ export const AppReducer = (state: state, action: action) => {
         isHydrated: true,
       };
 
-      if (state.cards.length <= 0 || retVal.cards.length <= 0) {
+      if (
+        state.cards.length <= 0 ||
+        retVal.cards.length <= 0 ||
+        state.index > state.cards.length - 1
+      ) {
         const { players } = state;
         const cardsRaw = getShuffledCards(
           state.selectedGames.map(
@@ -205,6 +215,8 @@ export const AppReducer = (state: state, action: action) => {
           cards,
           card: cards[0],
           prevCard: cards[0],
+          index: 0,
+          prevIndex: 0,
         };
       }
 
@@ -263,6 +275,8 @@ export const AppReducer = (state: state, action: action) => {
         cards,
         card: cards[0],
         prevCard: cards[0],
+        index: 0,
+        prevIndex: 0,
       };
     }
     case "lightVibrate":
@@ -349,9 +363,6 @@ export const AppReducer = (state: state, action: action) => {
         removedCards: action.payload,
       };
     case "next": {
-      //if (state.hapticsEnabled)
-      //Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-
       let returnVal = {
         ...state,
         index: state.index + 1,

@@ -6,6 +6,6 @@ import GameLoading from "./skeleton";
 export default function GameLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const { state, dispatch } = useAppContext();
+  const { state } = useAppContext();
   return !state.card ? <GameLoading /> : children;
 }
