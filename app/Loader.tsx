@@ -22,11 +22,8 @@ export const Loader = ({
   // Wrap your save function in a useCallback hook with debounce
   const debouncedSave = useCallback(
     debounce((state: state) => {
-      localStorage.setItem(
-        "myAppState",
-        JSON.stringify({ ...state, isOnGameScreen: false })
-      );
-    }, 2000),
+      localStorage.setItem("myAppState", JSON.stringify({ ...state }));
+    }, 500),
     []
   ); // Adjust the debounce time (500ms) as needed
 
@@ -34,9 +31,7 @@ export const Loader = ({
     const savedState = localStorage.getItem("myAppState");
     dispatch({
       type: "hydrate",
-      payload: savedState
-        ? { ...JSON.parse(savedState), isOnGameScreen: pathname === "/game" }
-        : initialState,
+      payload: savedState ? JSON.parse(savedState) : initialState,
     });
     isMounted.current = true;
   }, []);

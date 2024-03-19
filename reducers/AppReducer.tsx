@@ -43,7 +43,6 @@ export const initialState: state = {
   soundEnabled: 0,
   prevSoundEnabled: 1,
   openModal: null,
-  isOnGameScreen: false,
   isHydrated: false,
 };
 
@@ -68,7 +67,6 @@ export type state = {
   soundEnabled: number;
   prevSoundEnabled: number;
   openModal: any;
-  isOnGameScreen: boolean;
   isHydrated: boolean;
 };
 
@@ -174,8 +172,7 @@ export type action =
       payload: any;
     }
   | {
-      type: "isOnGameScreen";
-      payload: boolean;
+      type: "hydrateGameScreen";
     }
   | {
       type: "hydrate";
@@ -185,11 +182,33 @@ export type action =
 export const AppReducer = (state: state, action: action) => {
   switch (action.type) {
     case "hydrate":
-      return {
+      let retVal = {
         ...state,
         ...action.payload,
         isHydrated: true,
       };
+
+      if (state.cards.length <= 0 || retVal.cards.length <= 0) {
+        const { players } = state;
+        const cardsRaw = getShuffledCards(
+          state.selectedGames.map(
+            (p: keyof typeof packConfig) => packConfig[p]
+          ),
+          state.players.length,
+          state.removedCards
+        );
+
+        const cards = remapCards(cardsRaw, players);
+
+        retVal = {
+          ...retVal,
+          cards,
+          card: cards[0],
+          prevCard: cards[0],
+        };
+      }
+
+      return retVal;
     case "setOfferings":
       return {
         ...state,
@@ -299,12 +318,6 @@ export const AppReducer = (state: state, action: action) => {
       return {
         ...state,
         players: state.players.filter((player) => player.id !== action.payload),
-      };
-    }
-    case "isOnGameScreen": {
-      return {
-        ...state,
-        isOnGameScreen: action.payload,
       };
     }
     case "handleNameChange":

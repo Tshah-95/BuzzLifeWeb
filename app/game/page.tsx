@@ -25,11 +25,6 @@ export default function Game() {
 
   const [sipsAddedFromJackpot, setSipsAddedFromJackpot] = useState(0);
 
-  useEffect(() => {
-    dispatch({ type: "isOnGameScreen", payload: true });
-    return () => dispatch({ type: "isOnGameScreen", payload: false });
-  }, []);
-
   return (
     <>
       <Header />
@@ -73,7 +68,7 @@ const Card = ({
   return (
     <>
       <div className="flex-1 flex flex-col justify-center gap-5 w-full" />
-      <div className="flex-2 flex flex-col justify-center items-center gap-5 w-full">
+      <div className="flex-2 flex flex-col justify-center items-center gap-5 w-full select-none">
         <Balancer ratio={0.3} className="w-full text-4xl text-center font-bold">
           {title}
         </Balancer>
@@ -81,7 +76,7 @@ const Card = ({
           {card.prompt}
         </Balancer>
       </div>
-      <div className="flex-1 flex flex-col justify-center items-center w-full">
+      <div className="flex-1 flex flex-col justify-center items-center w-full select-none">
         <h3 className="text-2xl font-bold">{card.drinkHeader}</h3>
         <p className="text-xl">
           {card.sipFlag > 0 ? "take(s)" : "give(s) out"}{" "}

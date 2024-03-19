@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useAppContext } from "@/reducers/AppReducer";
 import { useAnimation, motion } from "framer-motion";
 import { colors, gameColors } from "@/constants/variables";
+import { usePathname } from "next/navigation";
 
 export const BodyWrapper = ({
   children,
@@ -16,8 +17,11 @@ export const BodyWrapper = ({
   const controls = useAnimation();
 
   const {
-    state: { isOnGameScreen, card, prevCard, index, cards },
+    state: { index },
   } = useAppContext();
+
+  const pathname = usePathname();
+  const isOnGameScreen = pathname === "/game";
 
   useEffect(() => {
     setPageWindow(window);
