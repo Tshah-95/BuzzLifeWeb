@@ -13,7 +13,7 @@ export const BodyWrapper = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const [pageWindow, setPageWindow] = useState<Window | null>(null);
+  const [pageWindow, setPageWindow] = useState<number | null>(null);
   const controls = useAnimation();
 
   const {
@@ -24,7 +24,7 @@ export const BodyWrapper = ({
   const isOnGameScreen = pathname === "/game";
 
   useEffect(() => {
-    setPageWindow(window);
+    setPageWindow(window.innerHeight);
   }, []);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export const BodyWrapper = ({
     <main
       className="w-full"
       style={{
-        height: pageWindow?.innerHeight,
+        height: pageWindow ?? "100%",
       }}
     >
       <motion.div
